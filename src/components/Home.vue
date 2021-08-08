@@ -19,7 +19,8 @@
             4.可以直接写router是否使用 vue-router 的模式，启用该模式会在激活导航时以 index 作为 path 进行路由跳转-->
         <el-menu background-color="#333744" text-color="#fff"
                  active-text-color="#409FFF" :unique-opened="true"
-                 :collapse="isCollapse" :collapse-transition="false" :router="true">
+                 :collapse="isCollapse" :collapse-transition="false"
+                 :router="true" :default-active="activePath">
           <!--一级菜单-->
           <!--数值与字符串拼接会得到一个字符串 -->
           <el-submenu :index=" item.id + '' " v-for="item in menulist" :key="item.id">
@@ -31,7 +32,10 @@
               <span>{{ item.authName }}</span>
             </template>
             <!--二级菜单-->
-            <el-menu-item :index="'/' + subItem.path + '' " v-for="subItem in item.children" :key="subItem.id">
+            <el-menu-item :index=" '/' + subItem.path + '' "
+                          v-for="subItem in item.children"
+                          :key="subItem.id"
+                          @click="saveNavState('/' + subItem.path)">   <!--saveNavState 保存导航状态-->
               <template slot="title">
                 <!--图标-->
                 <i class="el-icon-menu"></i>
@@ -66,11 +70,15 @@ export default {
         '102': 'iconfont icon-danju',
         '145': 'iconfont icon-baobiao'
       },
-      isCollapse:false
+      isCollapse: false,
+      // 被激活的链接地址
+      activePath: ''
     }
   },
+  // 生命周期函数 创建
   created() {
     this.getMenuList()
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
     logout() {
@@ -87,8 +95,13 @@ export default {
       console.log(res);
     },
     // 点击按钮，切换的菜单的折叠与展开
-    toggleCollapse(){
+    toggleCollapse() {
       this.isCollapse = !this.isCollapse
+    },
+    // 保存链接的激活状态
+    saveNavState(activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
     }
   }
 }
@@ -120,7 +133,8 @@ export default {
 
 .el-aside {
   background-color: #333744;
-  .el-menu{
+
+  .el-menu {
     border-right: none;
   }
 }
@@ -128,16 +142,18 @@ export default {
 .el-main {
   background-color: #eaedf1;
 }
-.iconfont{
+
+.iconfont {
   margin-right: 8px;
 }
-.toggle-button{
+
+.toggle-button {
   background-color: #4a5064;
   font-size: 10px;
   line-height: 24px;
   color: #fff;
   text-align: center;
-  letter-spacing: 0.1em;  /*字母间距*/
-  cursor: pointer;  /*光标指针样式*/
+  letter-spacing: 0.1em; /*字母间距*/
+  cursor: pointer; /*光标指针样式*/
 }
 </style>
