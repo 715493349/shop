@@ -3,6 +3,8 @@ html, body, #app {
     height: 100%;
     margin: 0;
     padding: 0;
+    /*最小的宽度*/
+    max-width: 1920px;
 }
 
 /*面包屑导航区*/
