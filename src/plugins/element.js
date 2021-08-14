@@ -4,7 +4,7 @@ import {
     Container, Header, Aside, Main,
     Menu,Submenu,MenuItem,
     Breadcrumb,BreadcrumbItem, Card,Row,Col,Table,TableColumn,Switch,Tooltip,Pagination,Dialog,MessageBox,Select,Option,
-    Tag,Tree
+    Tag,Tree,Cascader
 } from 'element-ui'
 // 导入单框提示组件  需要全局挂载
 import {Message} from "element-ui"
@@ -43,6 +43,7 @@ Vue.use(Option)
 
 // 权限列表
 Vue.use(Tag)
+Vue.use(Cascader)
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
