@@ -13,3 +13,4 @@ export default {
 <style scoped>
 
 </style>
+<!--第一步写这个，第二步写路由占位重定位welcome页面-->

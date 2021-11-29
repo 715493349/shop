@@ -12,17 +12,22 @@
     <el-container>
       <!--侧边栏--><!---->
       <el-aside :width="isCollapse ? '64px' : '200px' "> <!--动态绑定收起的高度-->
+<!--        折叠菜单栏-->
         <div class="toggle-button" @click="toggleCollapse">┃┃┃</div>
         <!--侧边栏菜单区域-->
-        <!--1.还可以直接unique-opened 是否只保持一个子菜单的展开 2.collapse 是否水平折叠收起菜单
-            3.collapse-transition 是否开启折叠动画
-            4.可以直接写router是否使用 vue-router 的模式，启用该模式会在激活导航时以 index 作为 path 进行路由跳转-->
+        <!--1.还可以直接unique-opened 是否只保持一个子菜单的展开
+        2.collapse 是否水平折叠收起菜单
+        3.collapse-transition 是否开启折叠动画
+
+        4.可以直接写router是否使用 vue-router 的模式，启用该模式会在激活导航时以 index 作为 path 进行路由跳转
+        5,default-active	当前激活菜单的 index  用于菜单的子菜单的高亮-->
         <el-menu background-color="#333744" text-color="#fff"
                  active-text-color="#409FFF" :unique-opened="true"
                  :collapse="isCollapse" :collapse-transition="false"
                  :router="true" :default-active="activePath">
           <!--一级菜单-->
           <!--数值与字符串拼接会得到一个字符串 -->
+          <!-- index不能一样，否者会点开一个菜单其他菜单也会同时打开 -->
           <el-submenu :index=" item.id + '' " v-for="item in menulist" :key="item.id">
             <!-- 一级菜单的模板区域-->
             <template slot="title">
@@ -31,7 +36,7 @@
               <!--文本-->
               <span>{{ item.authName }}</span>
             </template>
-            <!--二级菜单-->
+            <!--二级菜单-->      <!--:index=" '/' + subItem.path + '' "做为路由跳转的地址-->
             <el-menu-item :index=" '/' + subItem.path + '' "
                           v-for="subItem in item.children"
                           :key="subItem.id"
@@ -57,10 +62,9 @@
 
 <script>
 export default {
-  // 把获取的数据挂载到自己的data中
   data() {
     return {
-      // 左侧菜单数据
+      //把获取的数据挂载到自己的data中 左侧菜单数据
       menulist: [],
       // 定义一个字体对象
       iconsObj: {
@@ -70,6 +74,7 @@ export default {
         '102': 'iconfont icon-danju',
         '145': 'iconfont icon-baobiao'
       },
+      // 是否折叠
       isCollapse: false,
       // 被激活的链接地址
       activePath: ''
@@ -77,7 +82,9 @@ export default {
   },
   // 生命周期函数 创建
   created() {
+    // getMenuList 获取左侧所有菜单列表  这里定义完到methods中定义
     this.getMenuList()
+    // 动态菜单的高亮
     this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
@@ -101,6 +108,7 @@ export default {
     // 保存链接的激活状态
     saveNavState(activePath) {
       window.sessionStorage.setItem('activePath', activePath)
+      // 点击不同的菜单时高亮
       this.activePath = activePath
     }
   }

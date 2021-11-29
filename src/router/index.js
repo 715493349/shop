@@ -7,26 +7,28 @@ import Users from "@/components/user/Users"
 import Rights from "@/components/power/Rights"
 import Roles from "@/components/power/Roles"
 import Cate from "@/components/goods/Cate"
+import Params from "@/components/goods/Params"
 
 Vue.use(VueRouter)
-
+    // 声明一个，最下面在暴露出去router
 const router = new VueRouter({
     routes: [
-        /*让目录默认到login目录*/
-        {path: '/', redirect: '/login'},
-        {path: '/login', component: Login},
-        // children属性 (子路由)
+        /*重定向：让目录默认到login目录*/
+        { path: '/', redirect: '/login' },
+        { path: '/login', component: Login },
         {
             path: '/home',
             component: Home,
             // 重定向到 /welcome
             redirect: '/welcome',
+            // children属性 (子路由)
             children: [
-                {path: '/welcome', component: Welcome},
-                {path: '/users', component: Users},
-                {path: '/rights', component: Rights},
-                {path: '/roles', component: Roles},
-                {path:'/categories',component:Cate}
+                { path: '/welcome', component: Welcome },
+                { path: '/users', component: Users },
+                { path: '/rights', component: Rights },
+                { path: '/roles', component: Roles },
+                { path: '/categories', component: Cate },
+                { path: '/params', component: Params }
             ]
         }
     ]
@@ -37,10 +39,10 @@ router.beforeEach((to, from, next) => {
     // to 将要分访问路径
     // from 代表从哪个路径跳转而来
     // next 是一个函数，表示放行
-    //         next有两种调用方式：next() 放行     next('/login')强制跳转路径
+    //   next有两种调用方式：next() 放行     next('/login')强制跳转路径
     // 判断用户访问的是不是登录页
     if (to.path === '/login') return next()
-    // 获取token
+        // 获取token
     const tokenStr = window.sessionStorage.getItem('token')
     if (!tokenStr) return next('/login')
     next()

@@ -20,6 +20,7 @@
         </el-form-item>
         <!--        按钮区域-->
         <el-form-item class="btns">
+<!--          login预校验的-->
           <el-button type="primary" @click="login">登陆</el-button>
           <el-button type="info" @click="resetLoginForm">重置</el-button>
 
@@ -34,7 +35,7 @@ export default {
   name: "Login",
   data() {
     return {
-      //这是登陆表单的数据绑定对象
+      //登陆表单的数据绑定对象
       loginForm: {
         username: 'admin',
         password: '123456'
@@ -55,20 +56,21 @@ export default {
       }
     }
   },
-  // 点击重置按钮，重置登陆表单
   methods: {
+    // 点击重置按钮，重置登陆表单
     resetLoginForm() {
       // console.log(this);
       this.$refs.loginFormRef.resetFields();
     },
     login() {
-      // validate的预调验
+      // validate的预调验，对整个表单进行校验的方法，参数为一个回调函数。
+      // 该回调函数会在校验结束后被调用，并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise
       this.$refs.loginFormRef.validate(async (valid) => {
         if (!valid) return;
        // 某个返回是一个Promise方法，就用await简化这个操作
        const {data:res} = await this.$http.post('login',this.loginForm);
-        // console.log(res);
-        // 进行if判断是否登陆成功
+        // console.log(res);   //data:null mata:{age:"用户不存在"，status:400}
+        // 进行if判断是否登陆成功   $message是自定义的注册，在element文件中全局挂载
         if (res.meta.status !== 200) return this.$message.error('登陆失败')
         this.$message.success('登陆成功')
         // 1.将登陆成功之后的token,保存客户端的sessionStorage中

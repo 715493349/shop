@@ -18,6 +18,13 @@
 
       <!--表格-->
       <!--data属性是数据源-->
+      <!-- :data各行数据，array类型； :columns各列配置，label表示当前列名称，prop表示当前列的内容的属性名 -->
+      <!-- // selection-type是一个布尔值，false表示不用复选框 -->
+      <!-- expand-type是展开航，类型为布尔值 -->
+      <!-- show-index表示是否显示数据索引 布尔值   默认false-->
+      <!-- index-text表示	数据索引名称  字符串 默认序号开始  -->
+      <!-- border	是否显示纵向边框 -->
+      <!-- show-row-hover  鼠标悬停时，是否高亮当前行 -->
       <tree-table class="treeTable"
                   :data="catelist"
                   :columns="columns"
@@ -36,8 +43,8 @@
         <!--排序-->
         <template slot="order" slot-scope="scope">
           <el-tag size="mini" v-if="scope.row.cat_level === 0">一级</el-tag>
-          <el-tag type="success" size="mini" v-else-if="scope.row.cat_level === 1">二级</el-tag>
-          <el-tag type="warning" size="mini" v-else>三级</el-tag>
+          <el-tag size="mini" type="success" v-else-if="scope.row.cat_level === 1">二级</el-tag>
+          <el-tag size="mini" type="warning" v-else>三级</el-tag>
         </template>
 
         <!--操作-->
@@ -46,9 +53,9 @@
           <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
         </template>
       </tree-table>
-      <!--分页区域-->
+      <!--分页区域  current-change页码值  current-page当前渲染的页码-->
       <el-pagination
-          @size-change="handleSizeChange"
+          @size-change="handleSizeChange" 
           @current-change="handleCurrentChange"
           :current-page="querInfo.pagenum"
           :page-sizes="[3, 5, 10, 15]"
@@ -59,25 +66,29 @@
     </el-card>
 
     <!--添加分类的对话框-->
-    <el-dialog
+    <el-dialog 
         title="添加分类"
         :visible.sync="addCateDialogVisible"
-        width="50%" @close="addCateDialogClose">
+        width="40%" 
+        @close="addCateDialogClose">
+
       <!--添加分类的表单-->
       <el-form :model="addCateFrom"
                :rules="addCateFromRules"
                ref="addCateFromRef"
                label-width="100px">
+
         <el-form-item label="分类名称:" prop="cat_name">
           <el-input v-model="addCateFrom.cat_name"></el-input>
         </el-form-item>
+
         <el-form-item label="父级分类:">
           <!--options：指定数据源   clearable:清空选项框内容-->
           <el-cascader
               v-model="selectedKeys"
               :options="parentCateList"
               :props="cascaderProps"
-              @change="parentCateChange" clearable>
+              @change="parentCateChange" clearable >
 
           </el-cascader>
         </el-form-item>
@@ -98,13 +109,13 @@ export default {
       querInfo: {
         type: 3,
         pagenum: 1,
-        pagesize: 5
+        pagesize: 10
       },
       // 商品分类的数据列表，默认为空
       catelist: [],
       // 总数据条数
       total: 0,
-      // 为table指定列的定义 里面的都是列的对象
+      // 为table指定列的定义 里面的都是列的对象，colums属性；label表示当前列名称，prop表示当前列的内容的属性名
       columns: [
         {
           label: '分类名称',
@@ -112,16 +123,16 @@ export default {
         },
         {
           label: '是否有效',
-          // 表示将当前列定义为模板
+          // 表示将当前列定义为模板   
           type: 'template',
-          // 表示当前这一列使用模板名称
+          // 表示当前这一列使用模板名称  插槽
           template: 'isok'
         },
         {
           label: '排序',
-          // 表示将当前列定义为模板
+          // 表示将当前列定义为模板   
           type: 'template',
-          // 表示当前这一列使用模板名称
+          // 表示当前这一列使用模板名称  插槽
           template: 'order'
         },
         {
@@ -172,19 +183,21 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('获取商品失败!')
       }
-      console.log(res.data);
+      // console.log(res.data);
       // 把数值列表，赋值给catelist
       this.catelist = res.data.result
       this.total = res.data.total
     },
-    // 监听pagesize改变
+    // 监听pagesize(页的尺寸)改变
     handleSizeChange(newSize) {
       this.querInfo.pagesize = newSize
+      // 尺寸改变，要更新表格数据
       this.getCateList()
     },
-    // 监听pagenum改变
+    // 监听pagenum（页码）改变
     handleCurrentChange(newPage) {
       this.querInfo.pagenum = newPage
+      // 赋值完更新列表数据
       this.getCateList()
     },
     // 点击按钮，展示添加分类的对话框
@@ -196,10 +209,7 @@ export default {
     },
     // 获取父级分类的数据列表
     async getParentCateList() {
-      const {data: res} = await this.$http.get('categories',
-          {
-            params: {type: 2}
-          })
+      const {data: res} = await this.$http.get('categories',{params: {type: 2}})
       if (res.meta.status !== 200) {
         return this.$message.error('获取父级分类数据失败!')
       }
@@ -215,7 +225,7 @@ export default {
         this.addCateFrom.cat_pid = this.selectedKeys[this.selectedKeys.length - 1]
         // 为当前分类的等级赋值
         this.addCateFrom.cat_leve = this.selectedKeys.length
-        // return
+        return
       } else {
         this.addCateFrom.cat_pid = 0
         this.addCateFrom.cat_leve = 0
@@ -224,8 +234,10 @@ export default {
     // 点击按钮，添加新的分类
     addCate() {
       // console.log(this.addCateFrom);
+      // 对表单填写的数据进行预验证
       this.$refs.addCateFromRef.validate(async value => {
-        if (!value) return
+        if (!value) return   //失败了直接return
+        // 若预校验通过，发送请求
         const {data:res} = await this.$http.post('categories',this.addCateFrom)
         if (res.meta.status !== 201){
           return this.$message.error('添加分类失败!')
@@ -252,4 +264,5 @@ export default {
 .treeTable {
   margin-top: 15px;
 }
+
 </style>

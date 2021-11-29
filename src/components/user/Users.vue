@@ -11,9 +11,11 @@
     <!--卡片视图区域-->
     <el-card>
       <!--搜索与添加区域-->
+      <!--栅格系统，一行24个，，row表示行，col表示列-->
+      <!-- gutter  表示间距 -->
       <el-row :gutter="20">
         <el-col :span="9">
-          <!--在点击由 clearable 属性生成的清空按钮时触发-->
+          <!--在点击由 clearable 属性生成的清空按钮时触发   需要用clear监听获取全部用户信息的数据-->
           <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="getUserList">
             <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
           </el-input>
@@ -22,6 +24,7 @@
           <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
         </el-col>
       </el-row>
+
       <!--用户列表区-->
       <!-- 实数据有边框直接用border  表哥之间有斑马纹用stripe-->
       <el-table :data="userlist" border stripe>
@@ -31,6 +34,7 @@
         <el-table-column label="电话" prop="mobile"></el-table-column>
         <el-table-column label="角色" prop="role_name"></el-table-column>
         <el-table-column label="状态">  <!--mg_state服务器默认为turn-->
+        <!-- 插槽 -->
           <template slot-scope="scope">
             <!--事件名称：change	switch状态发生变化时的回调函数-->
             <el-switch v-model="scope.row.mg_state" @change="userStateChanged(scope.row)">
@@ -39,7 +43,7 @@
         </el-table-column>
         <el-table-column label="操作" width="180px">
           <template slot-scope="scope">
-            <!--修改按钮-->
+            <!--修改按钮    enterable是布尔值，所以要绑定-->
             <el-tooltip effect="dark" content="修改角色" placement="top-start" :enterable="false">
               <el-button type="primary" icon="el-icon-edit" size="mini"
                          @click="showEditDialog(scope.row.id)"></el-button>
@@ -65,6 +69,7 @@
           :total="total">
       </el-pagination>
     </el-card>
+    
     <!--添加用户的对话框-->
     <!--visible.sync控制对话框的显示与隐藏  close关闭事件-->
     <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="50%" @close="addDialogClose">
@@ -166,7 +171,7 @@ export default {
         // 当前的页数
         pagenum: 1,
         // 当前每页显示多少条数据
-        pagesize: 2
+        pagesize: 5
       },
       // 数据获取成功，就保存到data中
       userlist: [],
@@ -223,6 +228,7 @@ export default {
     }
   },
   created() {
+    //第一步 自己定义，再methods定义getUserList
     this.getUserList()
   },
   methods: {
@@ -232,10 +238,12 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('获取用户列表失败')
       }
+      // 在data中设置userlist和total接收获取的数据
       this.userlist = res.data.users
       this.total = res.data.total
       // console.log(res);
     },
+
     // 监听pagesize 改变的事件
     handleSizeChange(newSize) {
       // console.log(newSize);
@@ -248,6 +256,7 @@ export default {
       this.queryInfo.pagenum = newPage
       this.getUserList()
     },
+
     // 监听 switch开关状态改变
     async userStateChanged(userinfo) {
       // userinfo.mg_state = undefined;
@@ -384,3 +393,4 @@ export default {
 <style lang="less" scoped>
 
 </style>
+<!--定义一个获取数据的参数没然后把数据保存在里面，-->
