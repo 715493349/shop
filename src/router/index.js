@@ -13,9 +13,16 @@ Vue.use(VueRouter)
     // 声明一个，最下面在暴露出去router
 const router = new VueRouter({
     routes: [
+<<<<<<< HEAD
         /*重定向：让目录默认到login目录*/
         { path: '/', redirect: '/login' },
         { path: '/login', component: Login },
+=======
+        /*让目录默认到login目录*/
+        { path: '/', redirect: '/login' },
+        { path: '/login', component: Login },
+        // children属性 (子路由)
+>>>>>>> goods_params
         {
             path: '/home',
             component: Home,
