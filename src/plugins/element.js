@@ -1,14 +1,40 @@
 import Vue from 'vue'
 import {
-    Button, Form, FormItem, Input,
-    Container, Header, Aside, Main,
-    Menu,Submenu,MenuItem,
-    Breadcrumb,BreadcrumbItem, Card,Row,Col,Table,TableColumn,Switch,Tooltip,Pagination,Dialog,MessageBox,Select,Option,
-    Tag,Tree,Cascader
+    Button,
+    Form,
+    FormItem,
+    Input,
+    Container,
+    Header,
+    Aside,
+    Main,
+    Menu,
+    Submenu,
+    MenuItem,
+    Breadcrumb,
+    BreadcrumbItem,
+    Card,
+    Row,
+    Col,
+    Table,
+    TableColumn,
+    Switch,
+    Tooltip,
+    Pagination,
+    Dialog,
+    MessageBox,
+    Select,
+    Option,
+    Tag,
+    Tree,
+    Cascader,
+    Alert,
+    Tabs,
+    TabPane
 } from 'element-ui'
 // 导入单框提示组件  需要全局挂载
-import {Message} from "element-ui"
-import {Slider} from "element-ui";
+import { Message } from "element-ui"
+import { Slider } from "element-ui";
 
 // 登陆页面
 Vue.use(Button)
@@ -44,6 +70,11 @@ Vue.use(Option)
 // 权限列表
 Vue.use(Tag)
 Vue.use(Cascader)
+
+// 分类参数
+Vue.use(Alert)
+Vue.use(Tabs)
+Vue.use(TabPane)
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

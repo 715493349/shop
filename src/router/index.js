@@ -7,14 +7,15 @@ import Users from "@/components/user/Users"
 import Rights from "@/components/power/Rights"
 import Roles from "@/components/power/Roles"
 import Cate from "@/components/goods/Cate"
+import Params from "@/components/goods/Params"
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
     routes: [
         /*让目录默认到login目录*/
-        {path: '/', redirect: '/login'},
-        {path: '/login', component: Login},
+        { path: '/', redirect: '/login' },
+        { path: '/login', component: Login },
         // children属性 (子路由)
         {
             path: '/home',
@@ -22,11 +23,12 @@ const router = new VueRouter({
             // 重定向到 /welcome
             redirect: '/welcome',
             children: [
-                {path: '/welcome', component: Welcome},
-                {path: '/users', component: Users},
-                {path: '/rights', component: Rights},
-                {path: '/roles', component: Roles},
-                {path:'/categories',component:Cate}
+                { path: '/welcome', component: Welcome },
+                { path: '/users', component: Users },
+                { path: '/rights', component: Rights },
+                { path: '/roles', component: Roles },
+                { path: '/categories', component: Cate },
+                { path: '/params', component: Params }
             ]
         }
     ]
@@ -40,7 +42,7 @@ router.beforeEach((to, from, next) => {
     //         next有两种调用方式：next() 放行     next('/login')强制跳转路径
     // 判断用户访问的是不是登录页
     if (to.path === '/login') return next()
-    // 获取token
+        // 获取token
     const tokenStr = window.sessionStorage.getItem('token')
     if (!tokenStr) return next('/login')
     next()
