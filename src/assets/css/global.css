@@ -1,5 +1,8 @@
 /*全局样式表*/
-html, body, #app {
+
+html,
+body,
+#app {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -7,7 +10,9 @@ html, body, #app {
     max-width: 1920px;
 }
 
+
 /*面包屑导航区*/
+
 .el-breadcrumb {
     margin-bottom: 15px;
     font-size: 13px;
@@ -22,12 +27,30 @@ html, body, #app {
     font-size: 13px;
 }
 
-.el-pagination{
+.el-pagination {
     margin-top: 15px;
 }
-.el-cascader{
+
+.el-cascader {
     width: 100%;
 }
-.el-cascader-menu{
+
+.el-cascader-menu {
     height: 300px;
+}
+
+.el-steps {
+    margin: 15px 0;
+}
+
+.el-step__title {
+    font-size: 13px;
+}
+
+.el-input__inner {
+    border: 1px solid #b1b1b1;
+}
+
+.ql-editor {
+    min-height: 300px;
 }
