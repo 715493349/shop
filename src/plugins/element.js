@@ -38,8 +38,18 @@ import {
     Cascader,
     Alert,
     Tabs,
+<<<<<<< HEAD
     TabPane
 >>>>>>> goods_params
+=======
+    TabPane,
+    Steps,
+    Step,
+    CheckboxGroup,
+    Checkbox,
+    Upload
+
+>>>>>>> goods_list
 } from 'element-ui'
 // 导入单框提示组件  需要全局挂载
 import { Message } from "element-ui"
@@ -87,6 +97,14 @@ Vue.use(Alert)
 Vue.use(Tabs)
 Vue.use(TabPane)
 >>>>>>> goods_params
+
+// 商品列表>商品分类
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
+Vue.use(Upload)
+
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

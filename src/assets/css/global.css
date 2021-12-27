@@ -40,4 +40,23 @@ body,
 
 .el-cascader-menu {
     height: 300px;
+<<<<<<< HEAD
+=======
+}
+
+.el-steps {
+    margin: 15px 0;
+}
+
+.el-step__title {
+    font-size: 13px;
+}
+
+.el-input__inner {
+    border: 1px solid #b1b1b1;
+}
+
+.ql-editor {
+    min-height: 300px;
+>>>>>>> goods_list
 }
