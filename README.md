@@ -1,4 +1,4 @@
-# vue_shop 分支主有问题，暂时没去解决，如要运行，拉取reop rt分支。
+# vue_shop 主分支有写diamante冲突问题，暂时没去解决，如要运行，拉取reop rt分支。
 
 ## Project setup
 ```
