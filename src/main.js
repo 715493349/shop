@@ -19,7 +19,7 @@ import 'quill/dist/quill.bubble.css' // 泡沫主体
 import axios from "axios"
 // 配置请求的根路径
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
-<<<<<<< HEAD
+
     // config是我们的请求对象    拦截器 用use函数挂载一个回调函数
     // interceptors.request就是请求的拦截器
 axios.interceptors.request.use(config => {
@@ -38,14 +38,13 @@ axios.interceptors.request.use(config => {
         // 在最后必须return一个config  为什么？
     return config
 })
->>>>>>> goods_list
+
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
     // 全局注册组件
 Vue.component('tree-table', TreeTable)
-<<<<<<< HEAD
-=======
+
     // 将富文本编辑器祖册成为全局可用组件
 Vue.use(VueQuillEditor)
 
@@ -64,7 +63,6 @@ Vue.filter('dateFormat', function(originVal) {
     // 拼接成一个完成的模板字符串`yyyy-mm-dd hh:mm:ss`
     return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
 })
->>>>>>> goods_list
 
 new Vue({
     router,
