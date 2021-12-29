@@ -1,13 +1,10 @@
 import Vue from 'vue'
 import {
-<<<<<<< HEAD
     Button, Form, FormItem, Input,
     Container, Header, Aside, Main,
     Menu,Submenu,MenuItem,
     Breadcrumb,BreadcrumbItem, Card,Row,Col,Table,TableColumn,Switch,Tooltip,Pagination,Dialog,MessageBox,Select,Option,
     Tag,Tree,Cascader,
-    Alert
-=======
     Button,
     Form,
     FormItem,
@@ -38,10 +35,6 @@ import {
     Cascader,
     Alert,
     Tabs,
-<<<<<<< HEAD
-    TabPane
->>>>>>> goods_params
-=======
     TabPane,
     Steps,
     Step,
@@ -50,8 +43,6 @@ import {
     Upload,
     Timeline,
     TimelineItem
-
->>>>>>> goods_list
 } from 'element-ui'
 
 // import Timeline from "./timeline/index"
@@ -97,11 +88,8 @@ Vue.use(Cascader)
 
 // 分类参数
 Vue.use(Alert)
-<<<<<<< HEAD
-=======
 Vue.use(Tabs)
 Vue.use(TabPane)
->>>>>>> goods_params
 
 // 商品列表>商品分类
 Vue.use(Steps)
