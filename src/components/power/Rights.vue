@@ -1,14 +1,14 @@
 <!--
  * @Author: luoheng
  * @Date: 2022-01-14 23:13:40
- * @LastEditTime: 2022-03-02 00:22:01
+ * @LastEditTime: 2022-03-03 01:46:34
  * @LastEditors: luoheng
  * @Description: 
  * God help those who help themselves
 -->
 <template>
   <div>
-    <!--面包屑导航区区域-->
+    <!--面包屑导航区区域 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>权限管理</el-breadcrumb-item>

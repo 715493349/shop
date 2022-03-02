@@ -1,7 +1,7 @@
 /*
  * @Author: luoheng
  * @Date: 2022-01-14 23:13:40
- * @LastEditTime: 2022-03-01 16:29:50
+ * @LastEditTime: 2022-03-03 01:45:51
  * @LastEditors: luoheng
  * @Description: 
  * God help those who help themselves
@@ -9,7 +9,7 @@
 // @ts-nocheck
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// 登录注册
+// 登录注册   
 import Login from "@/components/Login"
 // 后台菜单栏
 import Home from "@/components/Home"

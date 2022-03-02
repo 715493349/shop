@@ -7,7 +7,7 @@
       <el-breadcrumb-item>分类参数</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <!-- 2.卡片视图区域 -->
+    <!-- 2.卡片视图区域-->
     <el-card>
       <!-- 3.警告区域 -->
       <el-alert

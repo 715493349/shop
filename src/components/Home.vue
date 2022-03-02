@@ -1,6 +1,6 @@
 <template>
   <el-container class="home-container">
-    <!--    头部区域-->
+    <!--头部区域-->
     <el-header>
       <div>
         <img src="../assets/122.jpg" alt="" />
