@@ -252,7 +252,7 @@ export default {
         item.inputVisible = false;
         item.inputValue = '';
       })
-      console.log(res.data);
+      // console.log(res.data);
       // 21.无论获取的动态还是静态都会调用getParamsData()这个函数，获取的数据只有一份，都存在res.data上，区别动态和静态渲染的数据，先判断
       // 当前标签等于many是动态参数，否则是静态属性
       if(this.activeName === 'many'){

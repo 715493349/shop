@@ -1,4 +1,5 @@
 import Vue from 'vue'
+// @ts-ignore
 import App from './App.vue'
 import router from './router'
 import './plugins/element.js'
@@ -6,9 +7,11 @@ import './plugins/element.js'
 import './assets/fonts/iconfont.css'
 // 导入全局样式表
 import './assets/css/global.css'
+// @ts-ignore
 import TreeTable from 'vue-table-with-tree-grid'
 
 // 导入富文本编辑器
+// @ts-ignore
 import VueQuillEditor from 'vue-quill-editor'
 // 导入富文本编辑器对应的样式
 import 'quill/dist/quill.core.css' // 导入样式
@@ -39,10 +42,15 @@ Vue.filter('dateFormat', function(originVal) {
     const y = dt.getFullYear()
         // 加一个字符串变成字符类型，月份不足2位前面补一个0
         // padStart() 方法用另一个字符串填充当前字符串(如果需要的话，会重复多次)，以便产生的字符串达到给定的长度。从当前字符串的左侧开始填充。
+        // @ts-ignore
     const m = (dt.getMonth() + 1 + '').padStart('2', '0')
+        // @ts-ignore
     const d = (dt.getDate() + '').padStart('2', '0')
+        // @ts-ignore
     const hh = (dt.getHours() + '').padStart('2', '0')
+        // @ts-ignore
     const mm = (dt.getMinutes() + '').padStart('2', '0')
+        // @ts-ignore
     const ss = (dt.getSeconds() + '').padStart('2', '0')
 
     // 拼接成一个完成的模板字符串`yyyy-mm-dd hh:mm:ss`
