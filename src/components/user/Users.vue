@@ -28,11 +28,12 @@
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary" @click="addDialogVisible = true"
+          <el-button type="primary" plain @click="addDialogVisible = true"
             >添加用户</el-button
           >
         </el-col>
       </el-row>
+
       <!--用户列表区-->
       <!-- 实数据有边框直接用border  表哥之间有斑马纹用stripe-->
       <el-table :data="userlist" border stripe>
@@ -67,6 +68,7 @@
             <!--事件名称：change	switch状态发生变化时的回调函数-->
             <el-switch
               v-model="scope.row.mg_state"
+              active-color="#13ce66"
               @change="userStateChanged(scope.row)"
             >
             </el-switch>
@@ -85,6 +87,7 @@
                 type="primary"
                 icon="el-icon-edit"
                 size="mini"
+                plain
                 @click="showEditDialog(scope.row.id)"
                 >修改</el-button
               >
@@ -94,6 +97,7 @@
               type="danger"
               icon="el-icon-delete"
               size="mini"
+              plain
               @click="removeUserById(scope.row.id)"
               >删除</el-button
             >
@@ -108,6 +112,7 @@
                 type="success"
                 icon="el-icon-setting"
                 size="mini"
+                plain
                 @click="setRole(scope.row)"
                 >分配角色</el-button
               >
@@ -120,16 +125,19 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[1, 2, 5, 10]"
+        :page-sizes="[1, 3, 5, 10]"
         :page-size="queryInfo.pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
+        layout="sizes, prev, pager, next, jumper"
         :total="total"
         background
+        align="center"
       >
       </el-pagination>
     </el-card>
+
     <!--添加用户的对话框-->
-    <!--visible.sync控制对话框的显示与隐藏  close关闭事件-->
+    <!--visible.sync控制对话框的显示与隐藏 -->
+    <!-- close关闭事件回调 -->
     <el-dialog
       title="添加用户"
       :visible.sync="addDialogVisible"
@@ -138,13 +146,17 @@
     >
       <!--内容主体区域-->
       <!-- addForm是服务器返回的，需要在data中初始化 -->
+      <!-- model:数据绑定，名称自定义，然后再data中初始化-->
+      <!-- rules：验证规则，名称自定义，data中初始化 -->
       <el-form
         :model="addForm"
         :rules="addFormRules"
         ref="addFormRef"
         label-width="80px"
       >
-        <!-- prop：验证规则 -->
+        <!-- prop：验证规则名称 -->
+        <!-- addForm.username：addForm是表单对象，username是用户名，自定义，data初始化 -->
+        <!-- ref 被用来给元素或子组件注册引用信息 -->
         <el-form-item label="用户名" prop="username">
           <el-input v-model="addForm.username"></el-input>
         </el-form-item>
@@ -164,6 +176,7 @@
         <el-button type="primary" @click="addUser">确 定</el-button>
       </span>
     </el-dialog>
+
     <!--    修改用户对话框-->
     <el-dialog
       title="修改用户"
@@ -188,7 +201,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible">取 消</el-button>
+        <el-button @click="editDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="editUserInfo">确 定</el-button>
       </span>
     </el-dialog>
@@ -334,7 +347,7 @@ export default {
         params: this.queryInfo,
       });
       if (res.meta.status !== 200) {
-        return this.$message.error("获取用户列表失败");
+        return this.$message.error("获取用户列表失败！");
       }
       this.userlist = res.data.users;
       this.total = res.data.total;
@@ -354,12 +367,12 @@ export default {
     },
     // 监听 switch开关状态改变
     async userStateChanged(userinfo) {
-      // userinfo.mg_state = undefined;
       // console.log(userinfo);
       const { data: res } = await this.$http.put(
         `users/${userinfo.id}/state/${userinfo.mg_state}`
       );
       if (res.meta.status !== 200) {
+        // 更新失败按钮回到点击前状态
         userinfo.mg_state = !userinfo.mg_state;
         return this.$message.error("更新用户状态失败!");
       }
@@ -370,10 +383,10 @@ export default {
       // console.log(this.$refs.addFormRef);
       this.$refs.addFormRef.resetFields();
     },
-    // 点击按钮添加新用户 弹出框表单预验证
+    // 点击确定按钮添加新用户 弹出框表单预验证
     addUser() {
       this.$refs.addFormRef.validate(async (valid) => {
-        // console.log(valid);
+        // console.log(valid);      //true
         // 如果valid校验失败，直接return
         if (!valid) return;
         // 校验成功，可以发起添加用户的网络请求
@@ -385,18 +398,20 @@ export default {
         // 隐藏添加用户的对话框
         this.addDialogVisible = false;
         // 新增后，重新获取用户列表，重新调用getUserList函数
-        await this.getUserList();
+        this.getUserList();
       });
     },
     // 展示编辑用户的对话框
     async showEditDialog(id) {
       // console.log(id);
+      // 因为id是动态id，使用字符串拼接
       const { data: res } = await this.$http.get("users/" + id);
       if (res.meta.status !== 200) {
         return this.$message.error("查询用户信息失败");
       }
       // 把查询到的用户信息res.data保存到editForm中
       this.editForm = res.data;
+      // console.log(this.editForm);
 
       this.editDialogVisible = true;
     },
@@ -407,7 +422,7 @@ export default {
     // 修改用户信息并提交
     editUserInfo() {
       this.$refs.editFormRef.validate(async (valid) => {
-        // console.log(valid);
+        // console.log(valid);      true
         if (!valid) return;
         // 发起修改用户安信息的数据请求
         const { data: res } = await this.$http.put(
@@ -444,7 +459,7 @@ export default {
         return err;
       });
       // 如果用户确认删除，则返回值为字符串 confine
-      // 若用户取消就会触发$confirm里面的错误，用catch捕获前面的错误，则返回值为字符串 cancel
+      // 若用户取消会触发$confirm里面的错误，用catch捕获前面的错误，则返回值为字符串 cancel
       // console.log(confirmResult);
       if (confirmResult !== "confirm") {
         return this.$message.info("已经取消删除");
@@ -452,7 +467,7 @@ export default {
       //  没有取消返回
       //   console.log('确认了删除');
       const { data: res } = await this.$http.delete("users/" + id);
-      console.log(res);
+      // console.log(res);
       if (res.meta.status !== 200) {
         return this.$message.error("删除用户失败");
       }
@@ -462,6 +477,7 @@ export default {
     },
     // 展示分配角色的对话框
     async setRole(userInfo) {
+      // console.log(userInfo);
       this.userInfo = userInfo;
       // 在展示对话框之前，获取所有角色的列表
       const { data: res } = await this.$http.get("roles");

@@ -11,18 +11,39 @@
     <el-card>
       <el-row>
         <el-col :span="8">
-          <el-input placeholder="请输入内容">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input
+            placeholder="请输入内容"
+            v-model="queryInfo.query"
+            clearable
+            @clear="getOrderList"
+          >
+            <el-button
+              slot="append"
+              icon="el-icon-search"
+              @click="getOrderList"
+            ></el-button>
           </el-input>
         </el-col>
       </el-row>
 
       <!-- 8.订单列表数据   :data是数据源-->
       <el-table :data="orderlist" border stripe>
-        <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column label="订单属性" prop="order_number"></el-table-column>
-        <el-table-column label="订单价格" prop="order_price"></el-table-column>
-        <el-table-column label="是否付款" prop="pay_status">
+        <el-table-column
+          type="index"
+          label="#"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="订单属性"
+          prop="order_number"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="订单价格"
+          prop="order_price"
+          align="center"
+        ></el-table-column>
+        <el-table-column label="是否付款" prop="pay_status" align="center">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.pay_status === '1'"
               >已付款</el-tag
@@ -30,26 +51,34 @@
             <el-tag type="danger" v-else>未付款</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="是否发货" prop="is_send"></el-table-column>
-        <el-table-column label="下单时间" prop="create_time">
+        <el-table-column
+          label="是否发货"
+          prop="is_send"
+          align="center"
+        ></el-table-column>
+        <el-table-column label="下单时间" prop="create_time" align="center">
           <template slot-scope="scope">
             {{ scope.row.create_time | dateFormat }}
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="280" align="center">
           <template slot-scope>
             <el-button
               size="mini"
               type="primary"
               icon="el-icon-edit"
+              plain
               @click="showBox"
-            ></el-button>
+              >修改</el-button
+            >
             <el-button
               size="mini"
               type="success"
               icon="el-icon-location"
+              plain
               @click="showProgressBox"
-            ></el-button>
+              >别点，后台会崩</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -82,7 +111,10 @@
         label-width="100px"
       >
         <el-form-item label="省市区/县" prop="address1">
-          <el-cascader v-model="addressForm.address1"></el-cascader>
+          <el-cascader
+            :options="cityDate"
+            v-model="addressForm.address1"
+          ></el-cascader>
         </el-form-item>
         <el-form-item label="详细地址" prop="address2">
           <el-input v-model="addressForm.address2"></el-input>
@@ -101,7 +133,7 @@
       <!-- 时间线 -->
       <el-timeline>
         <el-timeline-item
-          v-for="(activity, index) in progessInfo"
+          v-for="(activity, index) in progressInfo"
           :key="index"
           :timestamp="activity.time"
         >
@@ -114,8 +146,7 @@
 
 <script>
 // 18.导入全国省份地址目录
-// import cityDate from "./citydata.js";
-
+import cityDate from "./citydata.js";
 export default {
   data() {
     return {
@@ -145,7 +176,7 @@ export default {
           { required: true, message: "请填写详细地址", trigger: "blur" },
         ],
       },
-      // cityDate,
+      cityDate: cityDate,
       progressVisible: false,
       // 物流信息
       progressInfo: [],
@@ -165,7 +196,7 @@ export default {
         return this.$message.error("获取订单列表芭比Q！");
       }
       // this.$message.success('获取全订单成功！')
-      console.log(res);
+      // console.log(res);
       // 7.为total和orderlist赋值
       this.total = res.data.total;
       this.orderlist = res.data.goods;
@@ -188,13 +219,15 @@ export default {
       this.$refs.addressFormRef.resetFields();
     },
     async showProgressBox() {
-      const { data: res } = await this.$http.get('/kuaidi/1106975712662');
+      // 这个接口已经废了，不要点击物流按钮
+      this.progressVisible = true;
+      const { data: res } = await this.$http.get("/kuaidi/1106975712662");
       if (res.meta.status !== 200) {
         return this.$message.error("获取物流进度失败！");
       }
       this.progressInfo = res.data;
-      this.progressVisible = true;
-      console.log(this.progressInfo);
+      // this.progressVisible = true;
+      // console.log(this.progressInfo);
     },
   },
 };

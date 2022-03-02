@@ -6,7 +6,7 @@
       <el-breadcrumb-item>商品管理</el-breadcrumb-item>
       <el-breadcrumb-item>商品列表</el-breadcrumb-item>
     </el-breadcrumb>
-    
+
     <!-- 2.18.卡片视图区域 -->
     <el-card>
       <el-row :gutter="20">
@@ -25,8 +25,10 @@
           </el-input>
         </el-col>
         <el-col :span="4">
-            <!-- 20. -->
-          <el-button type="primary" @click="goAddpage">添加商品</el-button>
+          <!-- 20. -->
+          <el-button type="primary" @click="goAddpage" plain
+            >添加商品</el-button
+          >
         </el-col>
       </el-row>
 
@@ -59,28 +61,33 @@
         <el-table-column
           label="创建时间"
           prop="add_time"
-          width="150px"
+          width="170px"
           align="center"
         >
           <template slot-scope="scope">
             {{ scope.row.add_time | dateFormat }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="140px" align="center">
+        <el-table-column label="操作" width="180px" align="center">
           <template slot-scope="scope">
+            <!-- 修改按钮 -->
             <el-button
               size="mini"
               type="primary"
               icon="el-icon-edit"
-            ></el-button>
+              plain
+              @click="showEdit(scope.row.id)"
+              >修改
+            </el-button>
             <!-- 删除按钮 -->
             <el-button
               size="mini"
               type="danger"
               icon="el-icon-delete"
+              plain
               @click="removeById(scope.row.goods_id)"
-            >
-              </el-button>
+              >删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -95,6 +102,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
         background
+        align="center"
       >
       </el-pagination>
     </el-card>
@@ -118,7 +126,7 @@ export default {
     };
   },
   created() {
-    //   3.创建一个数据请求
+    //   3.创建 一个数据请求
     this.getGoodsList();
   },
   methods: {
@@ -132,47 +140,55 @@ export default {
         return this.$message.error("获取商品列表失败！");
       }
       this.$message.success("获取商品列表成功！");
-      console.log(res.data);
+      // console.log(res.data);
       // 8.把获取的数据赋值给goodslist,goodslist在data定义，且接收请到的数据
       this.goodslist = res.data.goods;
       // 9.把请求的数据放到data定义的total中接收
       this.total = res.data.total;
     },
-    // 14.
+    // 14.每页改变触发回调
     handleSizeChange(newSize) {
       // 15.拿到newSize就保存到queryInfo.argparse中
       this.queryInfo.argparse = newSize;
       // 重新获取列表数据
       this.getGoodsList();
     },
-    // 16.页码
+    // 16.当前页码改变触发回调
     handleCurrentChange(newPage) {
       this.queryInfo.pagenum = newPage;
       // 17.重新获取列表数据
       this.getGoodsList();
     },
+    // 修改回调
+    showEdit() {
+      alert("大意了！");
+    },
     // 19.删除按钮事件
     async removeById(id) {
-      const confirmResult = await this.$confirm("此操作将永久删除该商品, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      }).catch(err => err)
-      if(confirmResult !== 'confirm'){
-          return this.$message.info('已取消删除！')
+      const confirmResult = await this.$confirm(
+        "此操作将永久删除该商品, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      if (confirmResult !== "confirm") {
+        return this.$message.info("已取消删除！");
       }
-      const {data:res} = await this.$http.delete(`goods/${id}`)
-      if(res.meta.status !== 200){
-          return this.$message.error('删除失败！')
+      const { data: res } = await this.$http.delete(`goods/${id}`);
+      if (res.meta.status !== 200) {
+        return this.$message.error("删除失败！");
       }
-      this.$message.success('删除成功！')
-    //   刷新列表
-      this.getGoodsList()
+      this.$message.success("删除成功！");
+      //   刷新列表
+      this.getGoodsList();
     },
     // 21.调用这个函数，通过路由导航跳转指定页面
-    goAddpage(){
-        this.$router.push('/goods/add')
-    }
+    goAddpage() {
+      this.$router.push("/goods/add");
+    },
   },
 };
 </script>

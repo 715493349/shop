@@ -1,3 +1,11 @@
+/*
+ * @Author: luoheng
+ * @Date: 2022-01-14 23:13:40
+ * @LastEditTime: 2022-03-01 02:49:22
+ * @LastEditors: luoheng
+ * @Description: 
+ * God help those who help themselves
+ */
 import Vue from 'vue'
 // @ts-ignore
 import App from './App.vue'
@@ -21,11 +29,11 @@ import 'quill/dist/quill.bubble.css' // 泡沫主体
 import axios from "axios"
 // 配置请求的根路径
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
-    // config是我们的请求对象
+    // config是我们的请求对象         请求拦截器
 axios.interceptors.request.use(config => {
     // console.log(config);
     config.headers.Authorization = window.sessionStorage.getItem('token')
-        // 在最后必须return一个config  为什么？
+        // 在最后必须return一个config   请看axios官方文档
     return config
 })
 Vue.prototype.$http = axios

@@ -1,3 +1,11 @@
+<!--
+ * @Author: luoheng
+ * @Date: 2022-01-14 23:13:40
+ * @LastEditTime: 2022-03-02 00:22:01
+ * @LastEditors: luoheng
+ * @Description: 
+ * God help those who help themselves
+-->
 <template>
   <div>
     <!--面包屑导航区区域-->
@@ -17,7 +25,7 @@
         <el-table-column label="权限等级" prop="level">
           <!--自定义插槽作用域来定义输出输出格式 scope接收所有的数据-->
           <template slot-scope="scope">
-            <el-tag v-if=" scope.row.level === '0' ">一级</el-tag>
+            <el-tag v-if="scope.row.level === '0' ">一级</el-tag>
             <el-tag type="success" v-else-if="scope.row.level === '1'">二级</el-tag>
             <el-tag type="warning" v-else>三级</el-tag>
           </template>
@@ -46,10 +54,10 @@ export default {
     async getRightsList() {
       const {data: res} = await this.$http.get('rights/list')
       if (res.meta.status !== 200) {
-        return this.$message.error('获取权限列表失败')
+        return this.$message.error('获取权限列表失败!')
       }
       this.rightsList = res.data
-      console.log(this.rightsList);
+      // console.log(this.rightsList);
     }
   }
 }

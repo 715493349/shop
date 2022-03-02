@@ -1,16 +1,36 @@
+/*
+ * @Author: luoheng
+ * @Date: 2022-01-14 23:13:40
+ * @LastEditTime: 2022-03-01 16:29:50
+ * @LastEditors: luoheng
+ * @Description: 
+ * God help those who help themselves
+ */
+// @ts-nocheck
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+// 登录注册
 import Login from "@/components/Login"
+// 后台菜单栏
 import Home from "@/components/Home"
 import Welcome from "@/components/Welcome"
+// 用户列表
 import Users from "@/components/user/Users"
+// 权限管理
 import Rights from "@/components/power/Rights"
+// 角色列表
 import Roles from "@/components/power/Roles"
+// 商品分类
 import Cate from "@/components/goods/Cate"
+// 分类参数
 import Params from "@/components/goods/Params"
+// 商品列表
 import GoodsList from "@/components/goods/List"
+// 商品添加
 import Add from "@/components/goods/Add"
+// 订单管理
 import Order from "@/components/order/Order"
+// 数据报表
 import Report from "@/components/report/Report"
 
 Vue.use(VueRouter)

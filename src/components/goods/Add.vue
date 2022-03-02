@@ -114,7 +114,7 @@
               :action="uploadURL"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
-              list-type="picture"
+              list-type="picture-card"
               :headers="headerObj"
               :on-success="handleSuccess"
             >
@@ -125,7 +125,7 @@
             <!-- 富文本编辑器组件 -->
             <quill-editor v-model="addForm.goods_introduce"> </quill-editor>
             <!-- 添加商品分类按钮 -->
-            <el-button type="primary" class="btn1" @click="add"
+            <el-button type="primary" class="btn1" @click="add" plain
               >添加商品</el-button
             >
           </el-tab-pane>
@@ -209,11 +209,11 @@ export default {
         return this.$message.error("获取商品分类列表失败！");
       }
       this.catelist = res.data;
-      console.log(this.catelist);
+      // console.log(this.catelist);
     },
     // 级联选择器选中项变化触发函数
     handleChange() {
-      console.log(this.addForm.goods_cat);
+      // console.log(this.addForm.goods_cat);
       // 只允许级联选择器只选择三级商品分类
       if (this.addForm.goods_cat.length !== 3) {
         this.addForm.goods_cat = [];
@@ -242,7 +242,7 @@ export default {
         if (res.meta.status !== 200) {
           return this.$message.error("获取动态参数列表失败！");
         }
-        console.log(res.data);
+        // console.log(res.data);
         res.data.forEach((item) => {
           item.attr_vals =
             item.attr_vals.length === 0 ? [] : item.attr_vals.split(" ");
@@ -258,13 +258,13 @@ export default {
         if (res.meta.status !== 200) {
           return this.$message.error("获取静态数据失败！");
         }
-        console.log(res.data);
+        // console.log(res.data);
         this.onlyTableData = res.data;
       }
     },
     // 处理图片预览效果
     handlePreview(file) {
-      console.log(file);
+      // console.log(file);
       this.previewPath = file.response.data.url;
       this.previewVisible = true;
     },
@@ -273,26 +273,26 @@ export default {
       // console.log(file);
       // 1.获取将要移除的临时路径
       const filePath = file.response.data.tmp_path;
-      // 2.从pics数组中找到图片对应索引值
+      // // 2.从pics数组中找到图片对应索引值
       const i = this.addForm.pics.findIndex((x) => x.pic === filePath);
-      // 3.调用数组splice方法，把图片信息对象从pics数组移除
+      // // 3.调用数组splice方法，把图片信息对象从pics数组移除
       this.addForm.pics.splice(i, 1);
-      console.log(this.addForm);
+      // console.log(this.addForm);
     },
     // 监听图片上传成功的事件
     handleSuccess(response) {
-      console.log(response);
+      // console.log(response);
       // 1.拼接得到图片对象
       const picInfo = { pic: response.data.tmp_path };
       // 2.将图片信息对象push到pics数组中
       this.addForm.pics.push(picInfo);
-      console.log(this.addForm);
+      // console.log(this.addForm);
     },
     // 添加商品
     add() {
       // console.log(this.addForm);
       // 表单预验证，回调函数一个形参
-      this.$refs.addFormRef.validate(async valid => {
+      this.$refs.addFormRef.validate(async (valid) => {
         if (!valid) {
           return this.$message.error("请填写必要的表单项！");
         }
@@ -305,7 +305,7 @@ export default {
         this.manyTableData.forEach((item) => {
           const newInfo = {
             attr_id: item.attr_id,
-            attr_value: item.attr_vals.join(" ")
+            attr_value: item.attr_vals.join(" "),
           };
           this.addForm.attrs.push(newInfo);
         });
@@ -313,19 +313,19 @@ export default {
         this.onlyTableData.forEach((item) => {
           const newInfo = { attr_id: item.attr_id, attr_value: item.attr_vals };
           // 将newInfo  push  到 this.addForm.attrs中
-          this.addForm.attrs.push(newInfo)
+          this.addForm.attrs.push(newInfo);
         });
-        form.attrs = this.addForm.attrs
-        console.log(form);
+        form.attrs = this.addForm.attrs;
+        // console.log(form);
 
         // 添加商品发送请求 商品名称是唯一的
-        const {data: res} = await this.$http.post('goods',form)
-        if(res.meta.status !== 201){
-          return this.$message.error('添加商品失败！')
+        const { data: res } = await this.$http.post("goods", form);
+        if (res.meta.status !== 201) {
+          return this.$message.error("添加商品失败！");
         }
-        this.$message.success('添加商品成功！')
+        this.$message.success("添加商品成功！");
         // 编程式导航路由跳转到商品列表
-        this.$router.push('/goods')
+        this.$router.push("/goods");
       });
     },
   },
@@ -357,7 +357,6 @@ export default {
   width: 100%;
 }
 .btn1 {
-  float: right;
   margin-top: 15px;
 }
 </style>
