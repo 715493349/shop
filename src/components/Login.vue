@@ -31,7 +31,7 @@
             prefix-icon="iconfont icon-3702mima"
           ></el-input>
         </el-form-item>
-        <!--        按钮区域-->
+        <!-- 按钮区域-->
         <el-form-item class="btns">
           <el-button type="primary" @click="login">登陆</el-button>
           <el-button type="info" @click="resetLoginForm">重置</el-button>
