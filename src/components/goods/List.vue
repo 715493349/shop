@@ -76,7 +76,7 @@
               type="primary"
               icon="el-icon-edit"
               plain
-              @click="showEdit(scope.row.id)"
+              @click="showEdit(scope.row.goods_id)"
               >修改
             </el-button>
             <!-- 删除按钮 -->
@@ -105,6 +105,32 @@
         align="center"
       >
       </el-pagination>
+      <!-- 修改对话框 -->
+      <el-dialog title="修改商品" :visible.sync="editDialogVisible" width="30%">
+        <el-form
+          :model="goodsForm"
+          :rules="goodsFormRules"
+          ref="editFormRef"
+          label-width="80px"
+        >
+          <el-form-item label="商品名称" prop="goods_name">
+            <el-input v-model="goodsForm.goods_name"></el-input>
+          </el-form-item>
+          <el-form-item label="商品价格" prop="goods_price">
+            <el-input v-model="goodsForm.goods_price"></el-input>
+          </el-form-item>
+          <el-form-item label="商品数量" prop="goods_number">
+            <el-input v-model="goodsForm.goods_number"></el-input>
+          </el-form-item>
+          <el-form-item label="商品重量" prop="goods_weight">
+            <el-input v-model="goodsForm.goods_weight"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="editDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="editGoods">确 定</el-button>
+        </div>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -123,6 +149,27 @@ export default {
       goodslist: [],
       //   7.总数据条数
       total: 0,
+      // 查询商品
+      goodsForm: {},
+      editDialogVisible: false,
+      goodsFormRules: {
+        goods_name: [
+          { required: true, message: "请输入商品名称", trigger: "blur" },
+          { min: 2, max: 100, message: "长度在2到100个字符", trigger: "blur" },
+        ],
+        goods_price: [
+          { required: true, message: "请输入商品价格", trigger: "blur" },
+          { min: 1, max: 10, message: "长度在1到10个字符", trigger: "blur" },
+        ],
+        goods_number: [
+          { required: true, message: "请输入商品数量", trigger: "blur" },
+          { min: 1, max: 10, message: "长度在1到10个字符", trigger: "blur" },
+        ],
+        goods_weight: [
+          { required: true, message: "请输入商品重量", trigger: "blur" },
+          { min: 1, max: 10, message: "长度在1到10个字符", trigger: "blur" },
+        ],
+      },
     };
   },
   created() {
@@ -160,8 +207,26 @@ export default {
       this.getGoodsList();
     },
     // 修改回调
-    showEdit() {
-      alert("大意了！");
+    async showEdit(id) {
+      const { data: res } = await this.$http.get(`goods/${id}`);
+      if (res.meta.status !== 200) {
+        return this.$message.error("获取商品信息失败！");
+      }
+      this.$message.success("获取商品信息成功！");
+      this.goodsForm = res.data;
+      this.editDialogVisible = true;
+    },
+    editGoods() {
+      this.$http
+        .put(`goods/${this.goodsForm.cat_id}`, this.goodsForm)
+        .then((res) => {
+          if (res.data.meta.status !== 200) {
+            return this.$message.error("修改商品信息失败！");
+          }
+          this.$message.success("修改商品信息成功！");
+          this.editDialogVisible = false;
+          this.getGoodsList();
+        });
     },
     // 19.删除按钮事件
     async removeById(id) {
